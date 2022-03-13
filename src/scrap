@@ -1,0 +1,55 @@
+#type: ignore
+    
+    current_pos = 22
+    current_loops = 0
+    entry_pos = 22
+    entries = []
+
+    print(data)
+
+    for b in data:
+
+        if current_loops < current_pos:
+            current_loops += 1
+            print(f"Current Loops: {current_loops}")
+            continue
+        
+        print(f"Byte: {b}")
+        print(f"Byte Data: {data[current_pos]}")
+        print(f"Current: {current_pos}")
+        print(f"Entry Pos: {entry_pos}\n")
+
+        if b == 0:
+            entries.append(data[entry_pos:current_pos])
+            entry_pos = current_pos
+            current_pos += 18
+            current_loops += 1
+            continue
+        current_pos += 1
+        current_loops += 1
+
+    return entries
+
+    entries = []
+    data += b'\x00'
+    i = len(data) - 1
+    cont = True
+
+    while(i > 0):
+        while(cont):
+            while(chr(data[i]).isalpha()):
+                i -= 1
+            
+            i -=1
+            if chr(data[i]).isalpha():
+                cont = True
+            else:
+                cont = False
+                i -= 8
+
+        cont = True
+        entries.append(data[i:-1])
+        i -= 8
+        data = data[:i+1]
+
+    return entries
